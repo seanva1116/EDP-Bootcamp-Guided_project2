@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const url = process.env.MONGO_DB_URL;
 const dbName = process.env.MONGO_DB;
-const charColl = process.env.CHARACTERs_COLLECTION;
+const charactersColl = process.env.CHARACTERs_COLLECTION;
 const filmsColl = process.env.FILMS_COLLECTION;
 const planetsColl = process.env.PLANETS_COLLECTION;
 
@@ -17,7 +17,7 @@ app.get("/api/characters", async (req, res) => {
     try {
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
-        const collection = db.collection(charColl);
+        const collection = db.collection(charactersColl);
         const characters = await collection.find({}).toArray();
         res.json(characters);
     }
@@ -57,7 +57,7 @@ app.get("/api/characters/:id", async (req, res) => {
         const { id } = req.params;
         const client = await MongoClient.connect(url);
         const db = client.db(dbName);
-        const collection = db.collection(charColl);
+        const collection = db.collection(charactersColl);
         const character = await collection.find({"id": parseInt(id)}).toArray();
         res.json(character);
     }
@@ -88,6 +88,20 @@ app.get("/api/planets/:id", async (req, res) => {
         const collection = db.collection(planetsColl);
         const planets = await collection.find({"id": parseInt(id)}).toArray();
         res.json(planets);
+    }
+    catch (e) {
+        res.status(500).send(`Error fetching character: ${e}`);
+    }
+});
+
+app.get("/api/planets/:id/characters", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(charactersColl);
+        const characters = await collection.find({"homeworld": parseInt(id)}).toArray();
+        res.json(characters);
     }
     catch (e) {
         res.status(500).send(`Error fetching character: ${e}`);
