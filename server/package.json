@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch server"
+    "run": "node --watch server.js"
   },
-  "author": "Mo & Sean",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2"
