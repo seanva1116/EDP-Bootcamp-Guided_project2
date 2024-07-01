@@ -52,6 +52,48 @@ app.get("/api/planets", async (req, res) => {
     }
 });
 
+app.get("/api/characters/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(charColl);
+        const character = await collection.find({"id": parseInt(id)}).toArray();
+        res.json(character);
+    }
+    catch (e) {
+        res.status(500).send(`Error fetching character: ${e}`);
+    }
+});
+
+app.get("/api/films/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(filmsColl);
+        const films = await collection.find({"id": parseInt(id)}).toArray();
+        res.json(films);
+    }
+    catch (e) {
+        res.status(500).send(`Error fetching character: ${e}`);
+    }
+});
+
+app.get("/api/planets/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const collection = db.collection(planetsColl);
+        const planets = await collection.find({"id": parseInt(id)}).toArray();
+        res.json(planets);
+    }
+    catch (e) {
+        res.status(500).send(`Error fetching character: ${e}`);
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
