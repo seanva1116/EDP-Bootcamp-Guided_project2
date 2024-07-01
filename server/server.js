@@ -1,4 +1,9 @@
 import express from "express";
+import dotenv from "dotenv";
+
+dotenv.config();
+const url = process.env.MONGO_DB_URL;
+const dbName = process.env.MONGO_DB;
 
 const PORT = 4000;
 const app = express();
