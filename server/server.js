@@ -201,6 +201,11 @@ app.get("/api/planets/:id/characters", async (req, res) => {
     }
 });
 
+// Redirect route
+app.get('*', async (req, res) => {
+    res.json(null);
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
