@@ -1,31 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Home from './components/Home'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Header from "./components/Header";
+import Character from "./components/Character";
+import Planets from "./components/Planets";
+import Films from "./components/Film"
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
-  const [characters, setCharacters] = useState([]);
-  useEffect(() => {
-    const fetchChars = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.SWAPI_URL}/characters`);
-        if (!response.ok) {
-          throw new Error('Data could not be fetched!');
-        }
-        const json_response = await response.json();
-        setCharacters(json_response);
-      }
-      catch (e){
-        console.error("Error fetching characters:", e);
-      }
-    };
-  }, []);
-
   return (
-    <>
-      <Home />
-    </>
+    <div>
+       <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/characters/:id" element={<Character />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/films/:id" element={<Films />} />
+          <Route path="/planets/:id" element={<Planets />} />
+        </Routes>
+      </BrowserRouter>
+     
+    </div>
   )
 }
 
