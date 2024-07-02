@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
 import Home from './components/Home'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Header from "./components/Header";
 import Character from "./components/Character";

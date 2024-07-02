@@ -6,7 +6,7 @@ function Planets() {
 
   let navigate = useNavigate();
   let params = useParams();
-  let url = "/api";
+
   async function getPlanet() {
     let fetchedPlanet = await fetchPlanet(params.id);
     fetchedPlanet.films = await fetchFilms();
@@ -15,19 +15,19 @@ function Planets() {
   }
 
   async function fetchPlanet() {
-    let result = await fetch(`${url}/planets/${params.id}`);
+    let result = await fetch(`http://localhost:4000/api/planets/${params.id}`);
     return result.json();
   }
 
   const fetchCharacters = async () => {
-    let ret = await fetch(`${url}/planets/${params.id}/characters`).then((res) =>
+    let ret = await fetch(`http://localhost:4000/api/planets/${params.id}/characters`).then((res) =>
       res.json()
     );
     return ret;
   };
 
   const fetchFilms = async () => {
-    let ret = await fetch(`${url}/planets/${params.id}/films`).then((res) =>
+    let ret = await fetch(`http://localhost:4000/api/planets/${params.id}/films`).then((res) =>
       res.json()
     );
     return ret;
@@ -76,12 +76,12 @@ function Planets() {
         <section id="characters">
           <h2>Characters who have visited</h2>
           <ul>
-          {planet.characters
+            {planet.characters
               ? planet.characters.map((character) => (
-                  <li className="character" key={character.id} onClick={() => handleCharacterClick(character.id)}>
-                    {character.name}
-                  </li>
-                ))
+                <li className="character" key={character.id} onClick={() => handleCharacterClick(character.id)}>
+                  {character.name}
+                </li>
+              ))
               : ""}
           </ul>
         </section>
@@ -90,10 +90,10 @@ function Planets() {
           <ul>
             {planet.films
               ? planet.films.map((film) => (
-                  <li className="films" key={film.id} onClick={() => handleFilmClick(film.id)}>
-                    {film.title}
-                  </li>
-                ))
+                <li className="films" key={film.id} onClick={() => handleFilmClick(film.id)}>
+                  {film.title}
+                </li>
+              ))
               : ""}
           </ul>
         </section>

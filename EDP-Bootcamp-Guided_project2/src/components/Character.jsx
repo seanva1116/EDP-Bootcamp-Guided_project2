@@ -17,25 +17,26 @@ const Character = () => {
     }
 
     async function fetchCharacter() {
-        let result = await fetch(`http://localhost:4000/characters/${params.id}`);
+        let result = await fetch(`http://localhost:4000/api/characters/${params.id}`);
         return result.json();
     }
 
     const fetchHomeworld = async (fetchedCharacter) => {
         const planet = await fetch(
-            `http://localhost:4000/planets/${fetchedCharacter.homeworld}`
+            `http://localhost:4000/api/planets/${fetchedCharacter.homeworld}`
         ).then((res) => res.json());
         return planet;
     };
 
     const fetchFilms = async () => {
-        let films = await fetch(`http://localhost:4000/characters/${params.id}/films`).then((res) =>
+        let films = await fetch(`http://localhost:4000/api/characters/${params.id}/films`).then((res) =>
             res.json()
         );
         return films;
     };
 
     useEffect(() => getCharacter, []);
+
     function handlePlanetClick(id) {
         navigate(`/planets/${id}`);
     }
