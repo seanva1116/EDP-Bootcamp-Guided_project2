@@ -121,6 +121,7 @@ app.get("/api/films/:id/characters", async (req, res) => {
     }
 });
 
+
 app.get("/api/films/:id/planets", async (req, res) => {
     try {
         const { id } = req.params; // get id
@@ -135,6 +136,7 @@ app.get("/api/films/:id/planets", async (req, res) => {
             planetIdArray.push(planetIds[planetId].planet_id);
         collection = db.collection(planetsColl);
         const planets = await collection.find({"id":{ $in : planetIdArray}}).toArray();
+
         res.json(planets);
     } catch (err) {
         console.error("Error:", err);
