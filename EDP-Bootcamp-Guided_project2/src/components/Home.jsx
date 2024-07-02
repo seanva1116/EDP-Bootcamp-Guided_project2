@@ -5,19 +5,22 @@ const Home = () => {
 
     const fetchCharacters = () => {
         fetch("http://localhost:4000/api/characters")
-        .then( (res) => res.json())
-        .then( (characters) => {
-            setCharacters(characters);
-        });
+            .then((res) => res.json())
+            .then((characters) => {
+                setCharacters(characters);
+            });
     };
 
     useEffect(fetchCharacters, []);
+    function handleClick(id) {
+        navigate(`/characters/${id}`);
+    }
 
     return (
         <>
             <section id="charactersList">
-                {characters.map( (character) => (
-                    <div id={character.id}>
+                {characters.map((character) => (
+                    <div key={character.id} onClick={() => handleClick(character.id)}>
                         {character.name}
                     </div>
                 ))}
