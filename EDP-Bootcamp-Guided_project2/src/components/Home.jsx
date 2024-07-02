@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const Home = () => {
+    const [characters, setCharacters] = useState([]);
+
+    const fetchCharacters = () => {
+        fetch("http://localhost:4000/api/characters")
+        .then( (res) => res.json())
+        .then( (characters) => {
+            setCharacters(characters);
+        });
+    };
+
+    useEffect(fetchCharacters, []);
+
     return (
-        <body>
-            <div>
-                <h1>Star Wars Universe Lookup</h1>
-                <label for="searchString">Who you looking for? <span class="small">(Regular expressions are cool
-                    here)</span></label>
-                <input id="searchString" autocomplete="off" />
-            </div>
-            <div id="charactersList"></div>
-        </body>
+        <>
+            <section id="charactersList">
+                {characters.map( (character) => (
+                    <div id={character.id}>
+                        {character.name}
+                    </div>
+                ))}
+            </section>
+        </>
     );
 };
 
