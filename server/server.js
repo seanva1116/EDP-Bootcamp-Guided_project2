@@ -12,6 +12,8 @@ const planetsColl = process.env.PLANETS_COLLECTION;
 const app = express();
 app.use(express.json());
 
+const PORT = 4000;
+
 app.get("/api/characters", async (req, res) => {
     try {
         const client = await MongoClient.connect(url);
@@ -115,37 +117,45 @@ app.listen(PORT, () => {
 
 // -------- defined routes -------- //
 // get film's characters
-app.get("/api/films/:id/characters", async (req, res) => {
+app.get('/api/films/:id/characters', async (req, res) => {
     try {
-        const filmId = new ObjectId(req.params.id); // getting the id of the film from the url 
-        const filmCharacters = await dbName.connection('film_characters').find({_id: filmId}).toArray() // find related characters
-        const characterIds = filmCharacters.map(fc => fc.character_id) // get ids of that film
-        const characters = await db.collection('characters').find({_id: {$in: characterIds}}).toArray()
-        res.json(characters)
-
-        if(!film) {
-            return res.status(404).send("film not found")
-        }
-        
-
-    } catch (error) {
-        console.log("Error occured: ", error);
-        res.status(500).send("something went wrong")
+        const {id} = (req.params); // get id
+        const client = await MongoClient.connect(url); //connect to db
+        const db = client.db(dbName);
+        var collection = db.collection('films_characters'); //getting collection
+        console.log(collection);
+        const characters = await collection.find({'film_id':parseInt(id)}).toArray();
+        console.log(characters);
+        var planetIdArray = [];
+        for(var character in characters)
+            planetIdArray.push(characters[character].character_id)
+        collection = db.collection('characters');
+        const filmNames = await collection.find({'id':{ $in : planetIdArray}}).toArray();
+        res.json(filmNames);
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Couldn't load");
     }
-})
+});
 
 //get film's planets
 app.get("/api/films/:id/planets", async (req, res) => {
     try {
-        const filmId = new ObjectId(req.params.id); // getting the id of the film in mongoDB
-        const filmPlanets = await dbName.connection('films_planets').find({_id: filmId}).toArray();
-        const planetIds = filmPlanets.map(fp => fp.planet_id);
-        const planets = await dbName.collection('planets').find({_id: {$in: planetIds}}).toArray();
-        if(!film) {
-            return res.status(404).send("film not found")
-        }
+        const {id} = req.params;
+        const client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        var collection = db.collection('film_plaents');
+        console.log(collection);
+        const planets = await collection.find({'film_id':parseInt(id)}).toArray();
+        console.log(planets);
 
-        res.json(planets);
+        var characterArray = [];
+        for(var planet in planets)
+            characterArray.push(planets[planet].planet_id)
+        collection = db.collection('planets');
+        const filmNames = await collection.find({'id':{ $in : characterArray}}).toArray();
+        res.json(filmNames);
+
 
     } catch (error) {
         console.log("Error occured: ", error);
