@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import express from "express";
 import dotenv from "dotenv";
+import cors from 'cors';
 
 dotenv.config();
 const url = process.env.MONGO_DB_URL;
@@ -13,6 +14,7 @@ const filmsPlanets = process.env.FILMS_PLANETS;
 
 const PORT = 4000;
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // -------- defined routes -------- //
